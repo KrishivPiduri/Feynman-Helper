@@ -1,4 +1,7 @@
 import Outline from "./components/Outline";
+import Refine from "./components/Refine";
+import Scrutinize from "./components/Scrutinize";
+import Recall from "./components/Recall";
 import {useState} from "react";
 
 const steps = [
@@ -10,46 +13,35 @@ const steps = [
     {
         title: "Step 2: Refine",
         description: "Rearrange and refine your outline so it flows logically, like a story building upon itself.",
-        component: ({ input, setInput }) => (
-            <textarea
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Refine your outline here..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-            />
-        ),
+        component: (props) => <Refine {...props} />,
     },
     {
         title: "Step 3: Explain",
-        description: "Now, add explanations to each bullet point in your outline. Imagine you are teaching someone.",
-        component: ({ input, setInput }) => (
-            <textarea
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Explain each point here..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-            />
-        ),
+        description: "Now, add explanations to each bullet point in your outline. Imagine you are teaching someone. Add a colon at the end of each bullet and type up an explanation.",
+        component: (props) => <Outline {...props} />
     },
     {
         title: "Step 4: Scrutinize",
         description: "AI will help identify inconsistencies and rough spots in your explanation.",
-        component: () => (
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg">
-                Analyze Explanation
-            </button>
+        component: (props) => (
+            <Scrutinize {...props} />
         ),
     },
     {
-        title: "Step 5: Simplify",
-        description: "Now simplify your explanation. Imagine explaining it to a 5-year-old.",
-        component: ({ input, setInput }) => (
-            <textarea
+        title: "Step 5: Save",
+        description: "Here's your explanation. If you did all the steps right, this should be a complete explanation of your topic that even a 5-year-old can understand. Save it somewhere if you want to.",
+        component: ({ input }) => (
+            <p
                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="Simplify your explanation here..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-            />
+            >{input}</p>
+        )
+    },
+    {
+        title: "Step 6: Recall",
+        description: "Now that you have a complete understanding of the topic, you will now get some questions to help you solidify your understanding. Pick the type of question you want and the AI will generate questions for you.",
+        component: (props) => (
+            <Recall {...props}/>
         ),
     },
 ];

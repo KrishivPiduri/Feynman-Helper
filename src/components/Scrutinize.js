@@ -1,7 +1,7 @@
 import Outline from "./Outline";
 import {useState} from "react";
 
-export default function Refine (props) {
+export default function Scrutinize (props) {
     const [feedback, setFeedback]=useState("");
     const getFeedback = () => {
         // Simulate an API call to get feedback

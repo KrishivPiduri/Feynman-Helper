@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 
-export default function OutlineEditor({ input, setInput }) {
+export default function OutlineEditor({ input, setInput, topic, setTopic }) {
     const textareaRef = useRef(null);
 
     const handleKeyDown = (e) => {
@@ -94,13 +94,28 @@ export default function OutlineEditor({ input, setInput }) {
 
     return (
         <div className="p-4">
-      <textarea
-          ref={textareaRef}
-          value={input}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          className="w-full h-80 border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 overflow-x-auto whitespace-nowrap"
-      />
+            <div className="my-4">
+            <label className='font-bold'>Topic Name</label>
+            <input
+                type={"text"}
+                ref={textareaRef}
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={"Enter the topic name here..."}
+                className="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 overflow-x-auto whitespace-nowrap"
+            />
+            </div>
+            <div className="my-4">
+                <label className='font-bold'>Outline</label>
+                <textarea
+                    ref={textareaRef}
+                    value={input}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                    className="w-full h-80 border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 overflow-x-auto whitespace-nowrap"
+                />
+            </div>
         </div>
     );
 }

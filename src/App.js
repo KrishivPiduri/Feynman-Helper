@@ -4,7 +4,7 @@ import {useState} from "react";
 const steps = [
     {
         title: "Step 1: Outline",
-        description: "Write down everything you know about the concept you're struggling with. Organize it in a way that makes sense to you.",
+        description: "Please write down the name of your concept and an outline of it below. The outline is in bulleted format. To create a new bullet point, hit \"Enter\". To indent a bullet point, hit \"Tab\". To remove an indent, hit \"Shift+Tab\".",
         component: (props) => <Outline {...props} />
     },
     {
@@ -34,7 +34,7 @@ const steps = [
     {
         title: "Step 4: Scrutinize",
         description: "AI will help identify inconsistencies and rough spots in your explanation.",
-        component: ({ input, setInput }) => (
+        component: () => (
             <button className="px-4 py-2 bg-blue-500 text-white rounded-lg">
                 Analyze Explanation
             </button>
@@ -58,6 +58,7 @@ const steps = [
 export default function LearningAssistant() {
     const [currentStep, setCurrentStep] = useState(0);
     const [input, setInput] = useState("- ");
+    const [topic, setTopic]=useState("");
 
 
     const handleNext = () => {
@@ -78,7 +79,9 @@ export default function LearningAssistant() {
             <div className="mb-4">
                 <StepComponent
                     input={input}
+                    topic={topic}
                     setInput={(value) => {setInput(value)}}
+                    setTopic={(value)=>{setTopic(value)}}
                 />
             </div>
             <div className="flex justify-between">

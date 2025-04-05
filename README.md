@@ -1,70 +1,102 @@
-# Getting Started with Create React App
+# 🧠 Feynman Helper
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Feynman Helper** is a minimalist web app designed to help users deeply understand any topic using the **Feynman Technique** — a method of learning by teaching. It guides users through a structured series of steps to solidify their understanding of any concept.
 
-## Available Scripts
+## ✨ Features
 
-In the project directory, you can run:
+- 🔐 **Google Authentication** — simple, fast login via Google
+- 🗂️ **Personal Dashboard** — create, view, edit, and delete learning topics
+- 🧾 **Feynman Flow** — guided process including:
+  1. Outline
+  2. Refine
+  3. Explain
+  4. Scrutinize
+  5. Save
+  6. Recall
+- ☁️ **Firebase Integration** — user data is saved and retrieved in real-time
+- 🌌 **Starfield UI** — modern, responsive design with subtle visual delight
 
-### `npm start`
+## 🚀 Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 1. Clone the repository
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+git clone https://github.com/your-username/feynman-helper.git
+cd feynman-helper
+```
 
-### `npm test`
+### 2. Install dependencies
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+```
 
-### `npm run build`
+### 3. Set up Firebase
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Create a project in [Firebase Console](https://console.firebase.google.com):
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Enable **Google Authentication**
+- Enable **Cloud Firestore**
+- Copy your Firebase config and replace the placeholder in `firebase.js`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```js
+// firebase.js
+const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "...",
+};
+```
 
-### `npm run eject`
+> 🔒 Your Firebase config **can safely be public** — just make sure Firestore rules are correctly set up to protect user data.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 4. Run the app
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Go to `http://localhost:3000` in your browser.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🔐 Security & Deployment Notes
 
-## Learn More
+- Your Firebase config is public by design.
+- **Set Firestore rules** to secure user data:
+  ```
+  rules_version = '2';
+  service cloud.firestore {
+    match /databases/{database}/documents {
+      match /users/{userId}/topics/{topicId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+  ```
+- Deploy to [Vercel](https://vercel.com/) or [Firebase Hosting](https://firebase.google.com/docs/hosting) for easy production hosting.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🧱 Built With
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- React
+- Firebase (Auth + Firestore)
+- Tailwind CSS
+- OpenAI API (simulated)
+- Google OAuth
 
-### Code Splitting
+## 🙋 Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Contributions, issues, and feature requests are welcome!  
+Just fork the project and submit a pull request with a clear description.
 
-### Analyzing the Bundle Size
+## 📄 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+This project is licensed under the MIT License.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+> _“If you can’t explain it simply, you don’t understand it well enough.” – Richard Feynman_
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Let me know if you'd like to include badge icons, demo links, or deployment instructions too.

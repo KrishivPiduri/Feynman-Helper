@@ -1,31 +1,108 @@
-import { useState } from "react";
-import LearningFlow from "./LearningFlow";
+import { useState, useEffect } from "react";
+import { db, auth } from "./firebase";
+import {
+    collection,
+    addDoc,
+    deleteDoc,
+    doc,
+    getDocs,
+    query,
+    where,
+    setDoc,
+} from "firebase/firestore";
+import LearningAssistant from "./LearningFlow"; // Renamed LearningFlow to LearningAssistant for clarity
 
 export default function Dashboard() {
     const [topics, setTopics] = useState([]);
+    const [loadingTopics, setLoadingTopics] = useState(true);
     const [newTopic, setNewTopic] = useState("");
     const [selectedTopic, setSelectedTopic] = useState(null);
 
-    const handleAddTopic = () => {
+    // Fetch topics from Firestore on initial load
+    useEffect(() => {
+        if (auth.currentUser) {
+            const fetchTopics = async () => {
+                const topicsRef = collection(db, "topics");
+                const q = query(topicsRef, where("userId", "==", auth.currentUser.uid));
+                const querySnapshot = await getDocs(q);
+                const userTopics = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setTopics(userTopics);
+                setLoadingTopics(false);
+            };
+            fetchTopics();
+        }
+    });
+
+    // Add topic to Firestore
+    const handleAddTopic = async () => {
         if (newTopic.trim() === "") return;
-        setTopics([...topics, newTopic.trim()]);
-        setNewTopic("");
+        const topicData = {
+            name: newTopic.trim(),
+            outline: "", // initially empty
+            userId: auth.currentUser.uid,
+            createdAt: new Date(),
+        };
+
+        try {
+            const docRef = await addDoc(collection(db, "topics"), topicData);
+            setTopics([...topics, { id: docRef.id, ...topicData }]);
+            setNewTopic(""); // Clear the input
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
     };
 
-    const handleDeleteTopic = (topicToDelete) => {
-        setTopics(topics.filter((topic) => topic !== topicToDelete));
+    // Delete topic from Firestore
+    const handleDeleteTopic = async (topicId) => {
+        try {
+            await deleteDoc(doc(db, "topics", topicId));
+            setTopics(topics.filter((topic) => topic.id !== topicId));
+        } catch (e) {
+            console.error("Error deleting document: ", e);
+        }
     };
 
+    // Save updates from LearningAssistant and update Firestore
+    const handleSaveTopic = async (updatedTopicName, updatedOutline) => {
+        if (!selectedTopic) return;
+        try {
+            const topicDocRef = doc(db, "topics", selectedTopic.id);
+            await setDoc(
+                topicDocRef,
+                {
+                    name: updatedTopicName,
+                    outline: updatedOutline,
+                },
+                { merge: true }
+            );
+            // Update local topics state
+            setTopics((prevTopics) =>
+                prevTopics.map((t) =>
+                    t.id === selectedTopic.id
+                        ? { ...t, name: updatedTopicName, outline: updatedOutline }
+                        : t
+                )
+            );
+            setSelectedTopic(null);
+        } catch (error) {
+            console.error("Error saving topic: ", error);
+        }
+    };
+
+    // If a topic is selected, render LearningAssistant with initial values and an onSave callback
     if (selectedTopic) {
         return (
             <div className="max-w-3xl mx-auto p-4 relative">
-                <button
-                    onClick={() => setSelectedTopic(null)}
-                    className="mb-4 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
-                >
-                    Back to Dashboard
-                </button>
-                <LearningFlow topic={selectedTopic} />
+                <LearningAssistant
+                    initialTopic={selectedTopic.name}
+                    initialOutline={selectedTopic.outline}
+                    onSave={(updatedTopicName, updatedOutline) =>
+                        handleSaveTopic(updatedTopicName, updatedOutline)
+                    }
+                />
             </div>
         );
     }
@@ -48,16 +125,18 @@ export default function Dashboard() {
                     Add Topic
                 </button>
             </div>
-            {topics.length === 0 ? (
+            {loadingTopics ? (
+                <p className="text-gray-600">Loading...</p>
+            ) : topics.length === 0 ? (
                 <p className="text-gray-600">No topics added yet.</p>
             ) : (
                 <ul>
-                    {topics.map((topic, index) => (
+                    {topics.map((topic) => (
                         <li
-                            key={index}
+                            key={topic.id}
                             className="flex justify-between items-center border p-2 mb-2 rounded"
                         >
-                            <span>{topic}</span>
+                            <span>{topic.name}</span>
                             <div>
                                 <button
                                     onClick={() => setSelectedTopic(topic)}
@@ -66,7 +145,7 @@ export default function Dashboard() {
                                     Edit/Use
                                 </button>
                                 <button
-                                    onClick={() => handleDeleteTopic(topic)}
+                                    onClick={() => handleDeleteTopic(topic.id)}
                                     className="px-3 py-1 bg-red-500 text-white rounded"
                                 >
                                     Delete

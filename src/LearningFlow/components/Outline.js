@@ -1,82 +1,89 @@
 import { useRef } from "react";
 
 export default function OutlineEditor({ input, setInput, topic, setTopic }) {
-    const textareaRef = useRef(null);
+    // Separate refs for each field.
+    const topicRef = useRef(null);
+    const outlineRef = useRef(null);
 
-    const handleKeyDown = (e) => {
-        const textarea = textareaRef.current;
+    // Handler for the outline textarea's key events.
+    const handleOutlineKeyDown = (e) => {
+        const textarea = outlineRef.current;
         const start = textarea.selectionStart;
         const end = textarea.selectionEnd;
-        const currentinput = input;
+        const currentInput = input;
 
-        // Helper: Get current line info
-        const lineStart = currentinput.lastIndexOf("\n", start - 1) + 1;
-        const lineEnd = currentinput.indexOf("\n", start);
-        const currentLine = currentinput.substring(lineStart, lineEnd === -1 ? currentinput.length : lineEnd);
+        // Get current line info
+        const lineStart = currentInput.lastIndexOf("\n", start - 1) + 1;
+        const lineEnd = currentInput.indexOf("\n", start);
+        const currentLine = currentInput.substring(
+            lineStart,
+            lineEnd === -1 ? currentInput.length : lineEnd
+        );
 
-        // ENTER key: Insert a new bullet line preserving current indent.
         if (e.key === "Enter") {
             e.preventDefault();
-            // Match the current bullet with its indentation (e.g., "  - ")
             const match = currentLine.match(/^(\s*- )/);
             const bullet = match ? match[1] : "- ";
-            const newText = currentinput.slice(0, end) + "\n" + bullet + currentinput.slice(end);
+            const newText =
+                currentInput.slice(0, end) + "\n" + bullet + currentInput.slice(end);
             setInput(newText);
-            // Move caret to after the new bullet.
             setTimeout(() => {
                 const pos = end + 1 + bullet.length;
                 textarea.selectionStart = textarea.selectionEnd = pos;
             }, 0);
         }
 
-        // TAB key: Increase or decrease indent.
         if (e.key === "Tab") {
             e.preventDefault();
             if (e.shiftKey) {
-                // Decrease indent: Remove two spaces before the bullet if present.
+                // Decrease indent
                 const pattern = /^(\s{4,})(- )/;
                 const match = currentLine.match(pattern);
                 if (match) {
                     const newLine = currentLine.replace(/^(\s{4})/, "");
                     const newText =
-                        currentinput.substring(0, lineStart) +
+                        currentInput.substring(0, lineStart) +
                         newLine +
-                        currentinput.substring(lineEnd === -1 ? currentinput.length : lineEnd);
+                        currentInput.substring(
+                            lineEnd === -1 ? currentInput.length : lineEnd
+                        );
                     setInput(newText);
                     setTimeout(() => {
-                        const pos = start - 4; // remove 2 spaces
+                        const pos = start - 4;
                         textarea.selectionStart = textarea.selectionEnd = pos;
                     }, 0);
                 }
             } else {
-                // Increase indent: Add two spaces before the bullet.
+                // Increase indent
                 const pattern = /^(\s*)(- )/;
                 const match = currentLine.match(pattern);
                 if (match) {
                     const newIndent = match[1] + "  ";
                     const newLine = currentLine.replace(/^(\s*)(- )/, newIndent + "- ");
                     const newText =
-                        currentinput.substring(0, lineStart) +
+                        currentInput.substring(0, lineStart) +
                         newLine +
-                        currentinput.substring(lineEnd === -1 ? currentinput.length : lineEnd);
+                        currentInput.substring(
+                            lineEnd === -1 ? currentInput.length : lineEnd
+                        );
                     setInput(newText);
                     setTimeout(() => {
-                        const pos = start + 4; // move caret after added spaces
+                        const pos = start + 4;
                         textarea.selectionStart = textarea.selectionEnd = pos;
                     }, 0);
                 }
             }
         }
 
-        // Arrow keys: Ensure the cursor never goes before the bullet.
         if (["ArrowLeft", "ArrowUp", "ArrowDown"].includes(e.key)) {
             setTimeout(() => {
                 const pos = textarea.selectionStart;
-                const curLineStart = input.lastIndexOf("\n", pos - 1) + 1;
-                const lineEnd = input.indexOf("\n", curLineStart);
-                const curLine = input.substring(curLineStart, lineEnd === -1 ? input.length : lineEnd);
-
-                // Match indentation and bullet ("  - ")
+                const curLineStart = currentInput.lastIndexOf("\n", pos - 1) + 1;
+                const lineEnd = currentInput.indexOf("\n", curLineStart);
+                const curLine = currentInput.substring(
+                    curLineStart,
+                    lineEnd === -1 ? currentInput.length : lineEnd
+                );
                 const bulletMatch = curLine.match(/^(\s*- )/);
                 if (bulletMatch) {
                     const minPos = curLineStart + bulletMatch[0].length;
@@ -88,31 +95,36 @@ export default function OutlineEditor({ input, setInput, topic, setTopic }) {
         }
     };
 
-    const handleChange = (e) => {
+    // Handler for the outline textarea's change events.
+    const handleOutlineChange = (e) => {
         setInput(e.target.value);
+    };
+
+    // Handler for the topic input's change events.
+    const handleTopicChange = (e) => {
+        setTopic(e.target.value);
     };
 
     return (
         <div className="p-4">
             <div className="my-4">
-            <label className='font-bold'>Topic Name</label>
-            <input
-                type={"text"}
-                ref={textareaRef}
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={"Enter the topic name here..."}
-                className="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 overflow-x-auto whitespace-nowrap"
-            />
+                <label className="font-bold">Topic Name</label>
+                <input
+                    type="text"
+                    ref={topicRef}
+                    value={topic}
+                    onChange={handleTopicChange}
+                    placeholder="Enter the topic name here..."
+                    className="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 overflow-x-auto whitespace-nowrap"
+                />
             </div>
             <div className="my-4">
-                <label className='font-bold'>Outline</label>
+                <label className="font-bold">Outline</label>
                 <textarea
-                    ref={textareaRef}
+                    ref={outlineRef}
                     value={input}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}
+                    onChange={handleOutlineChange}
+                    onKeyDown={handleOutlineKeyDown}
                     className="w-full h-80 border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 overflow-x-auto whitespace-nowrap"
                 />
             </div>

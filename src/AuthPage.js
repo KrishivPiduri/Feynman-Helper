@@ -1,40 +1,30 @@
 // AuthPage.jsx
-import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import { signInWithCredential, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "./firebase";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "./firebase";
+import React from "react";
 
 export default function AuthPage({ onAuthSuccess }) {
-    const login = useGoogleLogin({
-        onSuccess: async (tokenResponse) => {
-            try {
-                // Optional: Fetch basic user info from Google
-                const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-                });
-                console.log("Google user info:", res.data);
-
-                // Create a Firebase credential with the token
-                const credential = GoogleAuthProvider.credential(null, tokenResponse.access_token);
-                const result = await signInWithCredential(auth, credential);
-                onAuthSuccess(result.user);
-            } catch (err) {
-                console.error("Error during Firebase sign-in", err);
-            }
-        },
-        onError: (errorResponse) => console.error("Login Failed:", errorResponse),
-    });
+    const handleLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            // result.user contains the Firebase user info.
+            onAuthSuccess(result.user);
+        } catch (err) {
+            console.error("Firebase sign-in error:", err);
+        }
+    };
 
     return (
         <div className="h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-xl shadow-lg text-center max-w-sm">
+                {/* Optionally include Google logo */}
                 <h1 className="text-2xl font-semibold mb-6">Welcome to the Learning App</h1>
                 <button
-                    onClick={() => login()}
+                    onClick={handleLogin}
                     className="flex items-center justify-center border border-gray-300 rounded-lg px-6 py-3 hover:bg-gray-50 transition-colors mx-auto"
                 >
                     <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s"
                         alt="Google"
                         className="w-6 h-6 mr-3"
                     />

@@ -90,7 +90,7 @@ export default function LearningAssistant({
     return (
         <div className="max-w-3xl mx-auto p-4 relative">
             <button
-                onClick={() => onSave(localTopic,input)}
+                onClick={() => onSave(localTopic, input)}
                 className="mb-4 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
             >
                 Back to Dashboard (save)
@@ -116,15 +116,14 @@ export default function LearningAssistant({
                     >
                         Back (Save)
                     </button>
-                    <button
-                        className={`px-4 py-2 bg-blue-500 text-white rounded-lg ${
-                            currentStep === steps.length - 1 ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
-                        onClick={handleNext}
-                        disabled={currentStep === steps.length - 1}
-                    >
-                        Next
-                    </button>
+                    {currentStep === steps.length - 1 ? null : (
+                        <button
+                            className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg"
+                            onClick={handleNext}
+                        >
+                            Next
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

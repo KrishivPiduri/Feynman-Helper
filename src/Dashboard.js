@@ -49,6 +49,7 @@ export default function Dashboard() {
         try {
             const docRef = await addDoc(collection(db, "topics"), topicData);
             setTopics([...topics, { id: docRef.id, ...topicData }]);
+            setSelectedTopic(newTopic);
             setNewTopic(""); // Clear the input
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -110,12 +111,13 @@ export default function Dashboard() {
     return (
         <div className="max-w-xl mx-auto p-4 bg-gray-200 rounded-xl mt-8 relative">
             <h1 className="text-2xl font-bold mb-4">Your Topics</h1>
-            <div className="mb-4">
+            <div className="mb-4 flex flex-col">
+                <label className="mb-2 font-bold">What topic do you want to review today</label>
                 <input
                     type="text"
                     value={newTopic}
                     onChange={(e) => setNewTopic(e.target.value)}
-                    placeholder="Enter a new topic..."
+                    placeholder="Ex. AP Human Geography Unit 6"
                     className="w-full border p-2 rounded-lg mb-2"
                 />
                 <button

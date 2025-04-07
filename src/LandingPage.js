@@ -23,7 +23,7 @@ export default function LandingPage({onGetStarted}) {
             <div className="absolute inset-0 bg-black bg-opacity-60 z-0" />
             <main className="relative z-10">
                 {/* HERO SECTION */}
-                <section className="min-h-screen flex flex-col justify-center items-center px-6 text-center">
+                <section className="h-[85vh] flex flex-col justify-center items-center px-6 text-center">
                     <h1 className="text-5xl md:text-6xl font-bold mb-4">
                         Outsmart the School System.
                     </h1>
@@ -77,15 +77,15 @@ export default function LandingPage({onGetStarted}) {
                 </section>
 
                 <section className="py-24 px-6 bg-gray-900 text-white text-center">
-                    <h2 className="text-4xl font-bold mb-6">The School System Is Broken</h2>
+                    <h2 className="text-4xl font-bold mb-6">Struggling in School Doesn’t Mean You’re Not Smart</h2>
                     <p className="text-xl max-w-3xl mx-auto mb-10">
-                        You’re not dumb. The system just rewards the wrong skills. You spend hours reading notes,
-                        watching videos, and still freeze on test day. Why? Because those methods give you a <em>false
-                        sense of understanding</em>.
+                        Traditional education isn’t designed for how everyone learns. You might spend hours reading
+                        notes or watching videos and still freeze on test day. That’s not a lack of intelligence, it’s
+                        a mismatch in methods.
                     </p>
                     <p className="text-lg">
-                        This tool helps you flip that. It’s fast, brutally honest, and built for test performance not
-                        fake confidence.
+                        This tool helps close that gap. It’s fast, honest, and designed to turn passive study into real
+                        understanding, so you’re ready when it counts.
                     </p>
                     <div className="flex flex-wrap justify-center gap-4">
                         <button
@@ -146,11 +146,11 @@ export default function LandingPage({onGetStarted}) {
                     </div>
                 </section>
 
-                {/* TESTIMONIALS (Optional Placeholder) */}
+                {/* TESTIMONIALS (Optional Placeholder)
                 <section className="py-24 px-6 bg-white text-black text-center">
                     <h2 className="text-4xl font-bold mb-12">What People Say</h2>
                     <p className="italic text-xl">Coming soon... 👀</p>
-                </section>
+                </section>*/}
 
                 {/* FAQ */}
                 <section className="py-24 px-6 bg-gray-900 text-white">

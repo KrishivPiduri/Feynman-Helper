@@ -8,44 +8,62 @@ import { useState, useEffect } from "react";
 const steps = [
     {
         title: "Step 1: Outline",
-        description:
-            "Please write down the name of your concept and an outline of it below. The outline is in bulleted format. To create a new bullet point, hit \"Enter\". To indent a bullet point, hit \"Tab\". To remove an indent, hit \"Shift+Tab\".",
+        description: (
+            <>
+                <p>
+                    Please write down the name of your concept and an outline of it below. The outline is in bulleted
+                    format.
+                </p>
+                <ul className="list-disc pl-6 mt-2 text-left">
+                    <li>To create a new bullet point, hit <kbd>Enter</kbd></li>
+                    <li>To indent a bullet point, hit <kbd>Tab</kbd></li>
+                    <li>To remove an indent, hit <kbd>Shift + Tab</kbd></li>
+                </ul>
+                <p className="my-4">
+                    This outline should not include the descriptions of any concept. Just list out the topics you need to know about in a format that makes sense to you. No need to refine it. None of this is final.
+                </p>
+                <p>
+                    If you do this right, it should take you <strong>10-15 minutes</strong> to finish this. Feel free to look back at your notes and see if you missed anything.
+                </p>
+            </>
+        ),
         component: (props) => <Outline {...props} />,
     },
     {
         title: "Step 2: Refine",
-        description:
-            "Rearrange and refine your outline so it flows logically, like a story building upon itself.",
+        description: (
+            <p>
+                Rearrange and refine your outline so it flows logically, like a story building upon itself. Remove topics that feel like they don't fit and add additional topics that might be helpful to set the context. Use AI feedback to help you.
+            </p>
+        ),
         component: (props) => <Refine {...props} />,
     },
     {
         title: "Step 3: Explain",
-        description:
-            "Now, add explanations to each bullet point in your outline. Imagine you are teaching someone. Add a colon at the end of each bullet and type up an explanation.",
+        description: (
+            <p>
+                Now, add explanations to each bullet point in your outline. Imagine you are teaching a 5-year-old about your concept. Add a colon at the end of each bullet and type up an explanation.
+            </p>
+        ),
         component: (props) => <Outline {...props} />,
     },
     {
         title: "Step 4: Scrutinize",
-        description:
-            "AI will help identify inconsistencies and rough spots in your explanation.",
+        description: (
+            <p>
+                AI will help identify inconsistencies and rough spots in your explanation. Fix them.
+            </p>
+        ),
         component: (props) => <Scrutinize {...props} />,
     },
     {
-        title: "Step 5: Save",
-        description:
-            "Here's your explanation. If you did all the steps right, this should be a complete explanation of your topic that even a 5-year-old can understand.",
-        component: ({ input }) => (
-            <p
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-                {input}
+        title: "Step 5: Recall",
+        description: (
+            <p>
+                Now that you have a complete understanding of the topic, you will now get some questions to help you
+                solidify your understanding.
             </p>
         ),
-    },
-    {
-        title: "Step 6: Recall",
-        description:
-            "Now that you have a complete understanding of the topic, you will now get some questions to help you solidify your understanding.",
         component: (props) => <Recall {...props} />,
     },
 ];
@@ -60,12 +78,10 @@ export default function LearningAssistant({
     const [localTopic, setLocalTopic] = useState(initialTopic || "");
     const [dirty, setDirty] = useState(false);
 
-    // Mark as dirty whenever input or topic changes
     useEffect(() => {
         setDirty(true);
     }, [input, localTopic]);
 
-    // Warn user if they try to reload/close with unsaved changes
     useEffect(() => {
         const handleBeforeUnload = (e) => {
             if (dirty) {
@@ -97,7 +113,7 @@ export default function LearningAssistant({
             </button>
             <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg">
                 <h1 className="text-2xl font-bold mb-2">{steps[currentStep].title}</h1>
-                <p className="text-gray-600 mb-4">{steps[currentStep].description}</p>
+                <div className="text-gray-600 mb-4">{steps[currentStep].description}</div>
                 <div className="mb-4">
                     <StepComponent
                         input={input}

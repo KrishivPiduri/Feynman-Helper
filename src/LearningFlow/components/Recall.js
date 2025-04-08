@@ -8,43 +8,41 @@ export default function Recall({ input }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Simulated question generation
-        const simulatedQuestions = [
-            {
-                question: "What is the main idea behind the Feynman Technique?",
-                options: [
-                    "To memorize facts efficiently",
-                    "To explain concepts in simple language",
-                    "To read and reread notes",
-                    "To watch videos repeatedly",
-                ],
-                answer: "To explain concepts in simple language",
-            },
-            {
-                question: "Why is writing an outline helpful when studying?",
-                options: [
-                    "It looks impressive",
-                    "It helps you skip practice tests",
-                    "It organizes your thoughts logically",
-                    "It's faster than watching videos",
-                ],
-                answer: "It organizes your thoughts logically",
-            },
-            {
-                question: "Which step helps identify gaps in understanding?",
-                options: [
-                    "Outline",
-                    "Refine",
-                    "Scrutinize",
-                    "Recall",
-                ],
-                answer: "Scrutinize",
-            },
-        ];
+        const fetchQuestions = async () => {
+            try {
+                const res = await fetch("https://pxvzdecqz0.execute-api.us-east-1.amazonaws.com/recall", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ outline: input }),  // Pass the outline here
+                });
 
-        setQuestions(simulatedQuestions);
-        setSelectedAnswers(Array(simulatedQuestions.length).fill(null));
-        setLoading(false);
+                // Ensure the response is valid
+                if (!res.ok) {
+                    throw new Error(`Error: ${res.statusText}`);
+                }
+
+                const data = await res.json();
+
+                if (data.error) {
+                    console.error("Error from API:", data.error);
+                    return;
+                }
+                console.log(data);
+                // Assuming the Lambda API returns the questions in 'data.questions'
+                setQuestions(data.questions);
+                setSelectedAnswers(Array(data.questions.length).fill(null));
+
+            } catch (error) {
+                console.error("Failed to fetch questions:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+
+        fetchQuestions();
     }, [input]);
 
     const handleSelect = (questionIndex, option) => {

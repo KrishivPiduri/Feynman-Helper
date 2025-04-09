@@ -47,8 +47,8 @@ export default function LandingPage({onGetStarted}) {
                     <div className="max-w-3xl mx-auto text-lg leading-relaxed">
                         <p className="mb-6">
                             I got my <strong>AWS DevOps Professional certification</strong>, one of the hardest
-                            industry exams, at age <strong>13</strong>. I have a <strong>5.667/6 GPA</strong>. But I’m
-                            not a genius, and I’m definitely not a grind.
+                            industry exams, at age <strong>13</strong>. AWS recommends at least 10 years of job experience before attempting it .
+                            I have a GPA of <strong>5.667/6.0</strong>. I’m not a genius, and I’m definitely not a grind.
                         </p>
                         <p className="mb-6">
                             What I’ve figured out is that school rarely measures true understanding. It rewards
@@ -188,7 +188,7 @@ export default function LandingPage({onGetStarted}) {
 
                 {/* FOOTER */}
                 <footer className="py-6 text-center text-sm text-gray-400 bg-black">
-                    Made with ☕ by <a href="https://krishivpiduri.com" className="underline">Krishiv</a> • Feynman
+                    Made by <a href="https://krishivpiduri.com" className="underline">Krishiv</a> • Feynman
                     Helper © {new Date().getFullYear()}
                 </footer>
             </main>

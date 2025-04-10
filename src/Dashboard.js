@@ -17,6 +17,7 @@ export default function Dashboard() {
     const [loadingTopics, setLoadingTopics] = useState(true);
     const [newTopic, setNewTopic] = useState("");
     const [selectedTopic, setSelectedTopic] = useState(null);
+    const [showExplanation, setShowExplanation] = useState(false);
 
     // Fetch topics from Firestore on initial load
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function Dashboard() {
             };
             fetchTopics();
         }
-    });
+    }, []);
 
     // Add topic to Firestore
     const handleAddTopic = async () => {
@@ -93,6 +94,69 @@ export default function Dashboard() {
         }
     };
 
+    // Explanation View
+    const ExplanationOverlay = () => (
+        <div className="relative max-w-3xl mx-auto p-6 bg-white bg-opacity-90 rounded-xl shadow-2xl text-lg leading-relaxed space-y-6">
+            <h2 className="text-3xl font-bold mb-4 text-center">What's This App All About?</h2>
+            <p>
+                This dashboard is your launchpad for learning. You can add a topic or pick an existing one,
+                and we’ll guide you through a super-effective 6-step process to help you actually *understand*
+                what you’re studying, not just skim and forget it.
+            </p>
+            <p>
+                We use a modified version of the Feynman Technique: a proven way to make sure you’re not just
+                passively reading or watching videos (which can trick you into thinking you understand stuff).
+                Instead, this method forces your brain to *engage* and *connect the dots*.
+            </p>
+
+            <div className="space-y-4">
+                <div>
+                    <strong>Step 1: Outline</strong>
+                    <p className="ml-4">
+                        Start with a simple bullet-point outline of your topic. Break it down into all the sub-topics.
+                        Use indentation to show which ones fall under others. Refer to your notes or textbook so you don’t miss anything.
+                    </p>
+                </div>
+                <div>
+                    <strong>Step 2: Refine</strong>
+                    <p className="ml-4">
+                        Clean it up. Put things in a logical order. Add anything that’s missing. Ditch anything that doesn’t help.
+                        The AI assistant can give you a hand here too.
+                    </p>
+                </div>
+                <div>
+                    <strong>Step 3: Explain</strong>
+                    <p className="ml-4">
+                        For each point, add a colon and write a short explanation — like you’re teaching it to someone else.
+                        This helps you figure out what you really understand.
+                    </p>
+                </div>
+                <div>
+                    <strong>Step 4: Scrutinize</strong>
+                    <p className="ml-4">
+                        The AI will go over your explanations and look for rough spots or logic gaps.
+                        It’s like a study buddy that’s great at spotting confusion.
+                    </p>
+                </div>
+                <div>
+                    <strong>Step 5: Recall</strong>
+                    <p className="ml-4">
+                        You’ll get some smart questions to test your recall. No multiple choice fluff — just honest mental reps.
+                    </p>
+                </div>
+            </div>
+
+            <div className="flex justify-center pt-4">
+                <button
+                    onClick={() => setShowExplanation(false)}
+                    className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 text-base"
+                >
+                    ← Back to Dashboard
+                </button>
+            </div>
+        </div>
+    );
+
     // If a topic is selected, render LearningAssistant with initial values and an onSave callback
     if (selectedTopic) {
         return (
@@ -110,9 +174,20 @@ export default function Dashboard() {
 
     return (
         <div className="max-w-xl mx-auto p-4 bg-gray-200 rounded-xl mt-8 relative">
+            <a
+                href="#"
+                className="absolute top-2 right-4 text-sm text-blue-600 hover:underline"
+                onClick={(e) => {
+                    e.preventDefault();
+                    setShowExplanation(true);
+                }}
+            >
+                Confused? Click here.
+            </a>
+            {showExplanation && <ExplanationOverlay />}
             <h1 className="text-2xl font-bold mb-4">Your Topics</h1>
             <div className="mb-4 flex flex-col">
-                <label className="mb-2 font-bold">What topic do you want to review today</label>
+                <label className="mb-2 font-bold">What topic do you want to review today?</label>
                 <input
                     type="text"
                     value={newTopic}

@@ -112,8 +112,8 @@ export default function Recall({ input }) {
                             if (submitted) {
                                 if (isSelected) {
                                     colorClass += isCorrect
-                                        ? " bg-green-200 border-green-500"
-                                        : " bg-red-200 border-red-500";
+                                        ? " bg-green-200 border-green-500 border-8"
+                                        : " bg-red-200 border-red-500 border-8";
                                 }
                             } else if (isSelected) {
                                 colorClass += " bg-blue-100 border-blue-500";

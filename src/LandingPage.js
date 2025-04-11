@@ -46,24 +46,16 @@ export default function LandingPage({onGetStarted}) {
                     <h2 className="text-4xl font-bold mb-6">Why I Built This</h2>
                     <div className="max-w-3xl mx-auto text-lg leading-relaxed">
                         <p className="mb-6">
-                            I got my <strong>AWS DevOps Professional certification</strong>, one of the hardest
-                            industry exams, at age <strong>13</strong>. AWS recommends at least 10 years of job experience before attempting it .
-                            I have a GPA of <strong>5.667/6.0</strong>. I’m not a genius, and I’m definitely not a grind.
+                            I’ve been using this method for years, not just to study, but to actually understand things faster and perform better with way less effort. With it, I’ve tackled some of the toughest certifications out there, maintained a top-tier GPA, and saved a ton of time doing it.
                         </p>
                         <p className="mb-6">
-                            What I’ve figured out is that school rarely measures true understanding. It rewards
-                            memorization, pattern recognition, and test-savvy. Most students feel like they’re falling
-                            behind; not because they’re not smart, but because the system wasn’t designed to reward
-                            clarity.
+                            Over time, I realized something: school doesn’t really measure how well you understand something. It mostly rewards memorization, shortcuts, and test-taking tricks. That leaves a lot of smart students feeling like they’re constantly behind — when the truth is, the system just isn’t built for real clarity.
                         </p>
                         <p className="mb-6">
-                            This app helps you game that system. It’s based on a modified Feynman Technique: an
-                            approach that doesn’t feel like studying at all, but dramatically boosts your ability
-                            to <em>score well</em>. It takes about half an hour, and the results speak for themselves.
+                            This app flips that. It’s based on a modified version of the Feynman Technique: a method that helps you learn deeply without grinding endlessly. It doesn’t feel like studying, but it works.
                         </p>
                         <p>
-                            Forget grinding. Forget watching endless videos and rereading notes. This tool will help you
-                            get the grades you want, without burning out or feeling like a fraud.
+                            No more all-nighters. No more rewatching the same video five times. Just a clear, simple tool to help you actually *get* things, and show it when it counts.
                         </p>
                     </div>
                     <div className="flex flex-wrap justify-center gap-4">
@@ -75,6 +67,7 @@ export default function LandingPage({onGetStarted}) {
                         </button>
                     </div>
                 </section>
+
 
                 <section className="py-24 px-6 bg-gray-900 text-white text-center">
                     <h2 className="text-4xl font-bold mb-6">Struggling in School Doesn’t Mean You’re Not Smart</h2>

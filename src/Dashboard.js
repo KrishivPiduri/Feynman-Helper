@@ -173,10 +173,11 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="max-w-xl mx-auto p-4 bg-gray-200 rounded-xl mt-8 relative">
+        <div className="max-w-xl mx-auto bg-gray-200 rounded-xl mt-8 relative p-4 pt-16 sm:pt-4">
             <a
+                // eslint-disable-next-line
                 href="#"
-                className="absolute top-2 right-4 text-sm text-blue-600 hover:underline"
+                className="text-sm text-blue-600 hover:underline text-right block"
                 onClick={(e) => {
                     e.preventDefault();
                     setShowExplanation(true);

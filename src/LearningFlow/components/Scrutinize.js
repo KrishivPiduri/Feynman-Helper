@@ -1,5 +1,6 @@
 import Outline from "./Outline";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function Scrutinize(props) {
     const [feedback, setFeedback] = useState("");
@@ -16,7 +17,7 @@ export default function Scrutinize(props) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    explanation: props.explanation || ""
+                    explanation: props.input || ""
                 })
             });
 
@@ -47,7 +48,7 @@ export default function Scrutinize(props) {
             {feedback && (
                 <div className="bg-gray-100 p-4 rounded-lg mt-4">
                     <h2 className="text-lg font-semibold">AI Feedback</h2>
-                    <p>{feedback}</p>
+                    <ReactMarkdown>{feedback}</ReactMarkdown>
                 </div>
             )}
         </>

@@ -181,7 +181,8 @@ export default function LandingPage({onGetStarted}) {
 
                 {/* FOOTER */}
                 <footer className="py-6 text-center text-sm text-gray-400 bg-black">
-                    Made by <a href="https://krishivpiduri.com" className="underline">Krishiv</a> • Feynman
+                    Made by <a href="https://krishivpiduri.com" className="underline">Krishiv</a> and <a
+                    href="https://www.linkedin.com/in/deepika-nathany-a5a96638/" className="underline">Deepika</a> • Feynman
                     Helper © {new Date().getFullYear()}
                 </footer>
             </main>

@@ -1,5 +1,6 @@
 import Outline from "./Outline";
 import { useState } from "react";
+import ReactMarkdown from 'react-markdown';
 
 export default function Refine(props) {
     const [feedback, setFeedback] = useState("");
@@ -59,9 +60,12 @@ export default function Refine(props) {
             {feedback && !loading && (
                 <div className="bg-gray-100 p-4 rounded-lg mt-4">
                     <h2 className="text-lg font-semibold">AI Feedback</h2>
-                    <p>{feedback}</p>
+                    <div className="prose max-w-none">
+                        <ReactMarkdown>{feedback}</ReactMarkdown>
+                    </div>
                 </div>
             )}
+
         </>
     );
 }
